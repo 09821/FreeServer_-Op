@@ -1,0 +1,764 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enviar Conteúdo para Discord</title>
+    <style>
+        :root {
+            --primary: #7289da;
+            --primary-dark: #5b6eae;
+            --dark: #2c2f33;
+            --darker: #23272a;
+            --light: #ffffff;
+            --gray: #99aab5;
+            --success: #43b581;
+            --danger: #f04747;
+            --warning: #faa61a;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, var(--dark), var(--darker));
+            color: var(--light);
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 600px;
+            background-color: rgba(35, 39, 42, 0.9);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), #ff6b6b, var(--warning));
+        }
+        
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: var(--light);
+            font-size: 2.2rem;
+            background: linear-gradient(90deg, var(--primary), #ff6b6b);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+        
+        .webhook-status {
+            background: rgba(244, 71, 71, 0.2);
+            border: 1px solid var(--danger);
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .webhook-status.connected {
+            background: rgba(67, 181, 129, 0.2);
+            border-color: var(--success);
+        }
+        
+        .form-group {
+            margin-bottom: 25px;
+            position: relative;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--gray);
+        }
+        
+        input, textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border-radius: 8px;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            background-color: rgba(44, 47, 51, 0.7);
+            color: var(--light);
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+        
+        input:focus, textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(114, 137, 218, 0.3);
+        }
+        
+        textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+        
+        .file-input-container {
+            position: relative;
+            overflow: hidden;
+            display: inline-block;
+            width: 100%;
+        }
+        
+        .file-input {
+            position: absolute;
+            left: 0;
+            top: 0;
+            opacity: 0;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+        }
+        
+        .file-input-label {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 12px 15px;
+            border-radius: 8px;
+            background-color: rgba(44, 47, 51, 0.7);
+            border: 2px dashed rgba(255, 255, 255, 0.2);
+            color: var(--gray);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .file-input-label:hover {
+            border-color: var(--primary);
+            color: var(--light);
+            background-color: rgba(44, 47, 51, 0.9);
+        }
+        
+        .file-input-label i {
+            margin-right: 10px;
+            font-size: 18px;
+        }
+        
+        .file-name {
+            margin-top: 8px;
+            font-size: 14px;
+            color: var(--gray);
+        }
+        
+        .file-preview {
+            margin-top: 10px;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        
+        .preview-item {
+            position: relative;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        
+        .preview-item img, .preview-item video {
+            max-width: 100px;
+            max-height: 100px;
+            border-radius: 8px;
+            object-fit: cover;
+        }
+        
+        .preview-item .remove-btn {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background: var(--danger);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            font-size: 12px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .time-limit {
+            font-size: 14px;
+            color: var(--warning);
+            margin-top: 5px;
+            display: flex;
+            align-items: center;
+            font-weight: 600;
+        }
+        
+        .time-limit i {
+            margin-right: 5px;
+        }
+        
+        .btn {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            border: none;
+            border-radius: 8px;
+            background: linear-gradient(90deg, var(--primary), var(--primary-dark));
+            color: white;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+            margin-top: 10px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: 0.5s;
+        }
+        
+        .btn:hover::before {
+            left: 100%;
+        }
+        
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 7px 15px rgba(114, 137, 218, 0.4);
+        }
+        
+        .btn:active {
+            transform: translateY(-1px);
+        }
+        
+        .btn:disabled {
+            background: var(--gray);
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        
+        .btn:disabled::before {
+            display: none;
+        }
+        
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 15px 20px;
+            border-radius: 8px;
+            color: white;
+            font-weight: 600;
+            z-index: 1000;
+            transform: translateX(150%);
+            transition: transform 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        .notification.success {
+            background-color: var(--success);
+        }
+        
+        .notification.error {
+            background-color: var(--danger);
+        }
+        
+        .notification.show {
+            transform: translateX(0);
+        }
+        
+        .emoji {
+            font-size: 20px;
+            margin-right: 5px;
+        }
+        
+        .optional {
+            color: var(--gray);
+            font-size: 12px;
+            font-style: italic;
+        }
+        
+        .discord-message {
+            background-color: rgba(114, 137, 218, 0.2);
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-left: 4px solid var(--primary);
+        }
+        
+        .discord-message p {
+            margin: 0;
+            font-weight: 600;
+            color: var(--light);
+        }
+        
+        .discord-message .mention {
+            color: var(--warning);
+            font-weight: 700;
+        }
+        
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(114, 137, 218, 0.7);
+            }
+            70% {
+                box-shadow: 0 0 0 10px rgba(114, 137, 218, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(114, 137, 218, 0);
+            }
+        }
+        
+        .loading {
+            display: none;
+            text-align: center;
+            margin: 20px 0;
+        }
+        
+        .loading-spinner {
+            border: 4px solid var(--gray);
+            border-top: 4px solid var(--primary);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .preview {
+            background: rgba(44, 47, 51, 0.7);
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 20px;
+            border-left: 4px solid var(--warning);
+        }
+        
+        .preview h3 {
+            color: var(--warning);
+            margin-bottom: 10px;
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Enviar Conteúdo para Discord</h1>
+        
+        <div class="webhook-status" id="webhookStatus">
+            <i class="fas fa-sync fa-spin"></i> Verificando webhook...
+        </div>
+        
+        <div class="discord-message">
+            <p><span class="mention">@everyone</span> <span class="mention">@here</span> mensagem on seu vagabundo!</p>
+        </div>
+        
+        <form id="contentForm">
+            <div class="form-group">
+                <label for="message"><span class="emoji">💬</span> Place your message</label>
+                <textarea id="message" placeholder="Digite sua mensagem aqui..." required></textarea>
+            </div>
+            
+            <div class="form-group">
+                <label for="link"><span class="emoji">🔗</span> Add your link</label>
+                <input type="url" id="link" placeholder="https://exemplo.com" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="videoLink"><span class="emoji">🎬</span> Add the link to your video <span class="optional">(Opcional)</span></label>
+                <input type="url" id="videoLink" placeholder="https://exemplo.com/video">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="emoji">😈</span> Place an image here</label>
+                <div class="file-input-container">
+                    <input type="file" id="image" class="file-input" accept="image/*" required>
+                    <label for="image" class="file-input-label">
+                        <i class="fas fa-cloud-upload-alt"></i> Carregar um arquivo
+                    </label>
+                </div>
+                <div id="imageName" class="file-name"></div>
+                <div id="imagePreview" class="file-preview"></div>
+            </div>
+            
+            <div class="form-group">
+                <label><span class="emoji">🔗</span> Post a video</label>
+                <div class="file-input-container">
+                    <input type="file" id="video" class="file-input" accept="video/*" required>
+                    <label for="video" class="file-input-label">
+                        <i class="fas fa-video"></i> Carregar um arquivo
+                    </label>
+                </div>
+                <div id="videoName" class="file-name"></div>
+                <div id="videoPreview" class="file-preview"></div>
+                <div class="time-limit">
+                    <i class="fas fa-clock"></i> Limite de tempo: 37 segundos
+                </div>
+            </div>
+            
+            <div class="preview">
+                <h3><i class="fas fa-eye"></i> Preview do que será enviado:</h3>
+                <div id="messagePreview"></div>
+            </div>
+            
+            <div class="loading" id="loading">
+                <div class="loading-spinner"></div>
+                <p>Enviando para o Discord...</p>
+            </div>
+            
+            <button type="submit" class="btn pulse" id="sendButton">
+                <span class="emoji">🔰</span> Send all
+            </button>
+        </form>
+    </div>
+    
+    <div id="notification" class="notification"></div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('contentForm');
+            const imageInput = document.getElementById('image');
+            const videoInput = document.getElementById('video');
+            const imageName = document.getElementById('imageName');
+            const videoName = document.getElementById('videoName');
+            const imagePreview = document.getElementById('imagePreview');
+            const videoPreview = document.getElementById('videoPreview');
+            const sendButton = document.getElementById('sendButton');
+            const notification = document.getElementById('notification');
+            const loading = document.getElementById('loading');
+            const webhookStatus = document.getElementById('webhookStatus');
+            const messagePreview = document.getElementById('messagePreview');
+            
+            // WEBHOOK ATUALIZADO
+            const WEBHOOK_URL = 'https://discord.com/api/webhooks/1435738177108447253/rJRSn31gVrpVV-L7gI6-phEer8eD5W8lX0QynJlFMRISuZbx5cI07h-xZR0p1mqzzMGY';
+            
+            let currentImageFile = null;
+            let currentVideoFile = null;
+
+            // Verificar webhook
+            async function checkWebhook() {
+                try {
+                    const response = await fetch(WEBHOOK_URL);
+                    if (response.status === 200) {
+                        webhookStatus.innerHTML = '<i class="fas fa-check-circle"></i> Webhook conectado com sucesso!';
+                        webhookStatus.classList.add('connected');
+                        return true;
+                    } else {
+                        webhookStatus.innerHTML = `<i class="fas fa-exclamation-triangle"></i> Webhook retornou status ${response.status}. Pode não funcionar.`;
+                        return false;
+                    }
+                } catch (error) {
+                    webhookStatus.innerHTML = '<i class="fas fa-times-circle"></i> Erro ao conectar com webhook. Verifique a URL.';
+                    return false;
+                }
+            }
+            
+            // Atualizar preview
+            function updatePreview() {
+                const message = document.getElementById('message').value;
+                const link = document.getElementById('link').value;
+                const videoLink = document.getElementById('videoLink').value;
+                
+                let preview = `<p><strong>Mensagem:</strong> ${message || '[Não preenchido]'}</p>`;
+                preview += `<p><strong>Link:</strong> ${link || '[Não preenchido]'}</p>`;
+                if (videoLink) {
+                    preview += `<p><strong>Link do Vídeo:</strong> ${videoLink}</p>`;
+                }
+                if (currentImageFile) {
+                    preview += `<p><strong>Imagem:</strong> ${currentImageFile.name}</p>`;
+                }
+                if (currentVideoFile) {
+                    preview += `<p><strong>Vídeo:</strong> ${currentVideoFile.name}</p>`;
+                }
+                
+                messagePreview.innerHTML = preview;
+            }
+
+            // Criar preview de imagem
+            function createImagePreview(file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const previewItem = document.createElement('div');
+                    previewItem.className = 'preview-item';
+                    previewItem.innerHTML = `
+                        <img src="${e.target.result}" alt="Preview">
+                        <button type="button" class="remove-btn" onclick="removeImage()">×</button>
+                    `;
+                    imagePreview.innerHTML = '';
+                    imagePreview.appendChild(previewItem);
+                };
+                reader.readAsDataURL(file);
+            }
+
+            // Criar preview de vídeo
+            function createVideoPreview(file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const previewItem = document.createElement('div');
+                    previewItem.className = 'preview-item';
+                    previewItem.innerHTML = `
+                        <video controls>
+                            <source src="${e.target.result}" type="${file.type}">
+                        </video>
+                        <button type="button" class="remove-btn" onclick="removeVideo()">×</button>
+                    `;
+                    videoPreview.innerHTML = '';
+                    videoPreview.appendChild(previewItem);
+                };
+                reader.readAsDataURL(file);
+            }
+
+            // Remover imagem
+            window.removeImage = function() {
+                currentImageFile = null;
+                imageInput.value = '';
+                imageName.textContent = '';
+                imagePreview.innerHTML = '';
+                updatePreview();
+            }
+
+            // Remover vídeo
+            window.removeVideo = function() {
+                currentVideoFile = null;
+                videoInput.value = '';
+                videoName.textContent = '';
+                videoPreview.innerHTML = '';
+                updatePreview();
+            }
+            
+            // Inicializar
+            checkWebhook();
+            
+            // Atualizar nomes dos arquivos selecionados
+            imageInput.addEventListener('change', function() {
+                if (this.files.length > 0) {
+                    currentImageFile = this.files[0];
+                    imageName.textContent = currentImageFile.name;
+                    createImagePreview(currentImageFile);
+                } else {
+                    currentImageFile = null;
+                    imageName.textContent = '';
+                    imagePreview.innerHTML = '';
+                }
+                updatePreview();
+            });
+            
+            videoInput.addEventListener('change', function() {
+                if (this.files.length > 0) {
+                    currentVideoFile = this.files[0];
+                    videoName.textContent = currentVideoFile.name;
+                    createVideoPreview(currentVideoFile);
+                    
+                    // Verificar duração do vídeo
+                    const video = document.createElement('video');
+                    video.preload = 'metadata';
+                    
+                    video.onloadedmetadata = function() {
+                        window.URL.revokeObjectURL(video.src);
+                        const duration = video.duration;
+                        
+                        if (duration > 37) {
+                            showNotification('O vídeo deve ter no máximo 37 segundos!', 'error');
+                            removeVideo();
+                        }
+                    };
+                    
+                    video.src = URL.createObjectURL(currentVideoFile);
+                } else {
+                    currentVideoFile = null;
+                    videoName.textContent = '';
+                    videoPreview.innerHTML = '';
+                }
+                updatePreview();
+            });
+            
+            // Atualizar preview quando campos mudarem
+            document.getElementById('message').addEventListener('input', updatePreview);
+            document.getElementById('link').addEventListener('input', updatePreview);
+            document.getElementById('videoLink').addEventListener('input', updatePreview);
+            
+            // Enviar formulário
+            form.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                
+                // Validar campos
+                const message = document.getElementById('message').value.trim();
+                const link = document.getElementById('link').value.trim();
+                const videoLink = document.getElementById('videoLink').value.trim();
+                
+                if (!message || !link || !currentImageFile || !currentVideoFile) {
+                    showNotification('Por favor, preencha todos os campos obrigatórios!', 'error');
+                    return;
+                }
+                
+                // Desabilitar botão e mostrar loading
+                sendButton.disabled = true;
+                sendButton.style.display = 'none';
+                loading.style.display = 'block';
+                
+                try {
+                    // Primeiro: Enviar a imagem
+                    const imageFormData = new FormData();
+                    imageFormData.append('file', currentImageFile);
+                    imageFormData.append('payload_json', JSON.stringify({
+                        content: "@everyone @here mensagem on seu vagabundo!",
+                        embeds: [
+                            {
+                                title: "📨 Nova Mensagem Recebida!",
+                                description: message,
+                                color: 0x7289DA,
+                                fields: [
+                                    {
+                                        name: "🔗 Link Inserido",
+                                        value: `[Clique aqui para abrir](${link})`,
+                                        inline: true
+                                    }
+                                ],
+                                timestamp: new Date().toISOString(),
+                                footer: {
+                                    text: "Enviado via Webhook - Parte 1/2 (Imagem)"
+                                }
+                            }
+                        ]
+                    }));
+
+                    console.log('Enviando imagem para webhook...');
+                    const imageResponse = await fetch(WEBHOOK_URL, {
+                        method: 'POST',
+                        body: imageFormData
+                    });
+
+                    if (!imageResponse.ok) {
+                        throw new Error(`Erro ao enviar imagem: ${imageResponse.status}`);
+                    }
+
+                    // Aguardar um pouco antes de enviar o vídeo
+                    await new Promise(resolve => setTimeout(resolve, 1000));
+
+                    // Segundo: Enviar o vídeo
+                    const videoFormData = new FormData();
+                    videoFormData.append('file', currentVideoFile);
+                    
+                    // Adicionar campo de vídeo link se existir
+                    const embedFields = [
+                        {
+                            name: "🔗 Link Inserido",
+                            value: `[Clique aqui para abrir](${link})`,
+                            inline: true
+                        }
+                    ];
+                    
+                    if (videoLink) {
+                        embedFields.push({
+                            name: "🎬 Link do Vídeo",
+                            value: `[Assistir vídeo](${videoLink})`,
+                            inline: true
+                        });
+                    }
+
+                    videoFormData.append('payload_json', JSON.stringify({
+                        embeds: [
+                            {
+                                title: "📹 Vídeo Recebido!",
+                                description: "Vídeo anexado abaixo:",
+                                color: 0x43B581,
+                                fields: embedFields,
+                                timestamp: new Date().toISOString(),
+                                footer: {
+                                    text: "Enviado via Webhook - Parte 2/2 (Vídeo)"
+                                }
+                            }
+                        ]
+                    }));
+
+                    console.log('Enviando vídeo para webhook...');
+                    const videoResponse = await fetch(WEBHOOK_URL, {
+                        method: 'POST',
+                        body: videoFormData
+                    });
+
+                    if (!videoResponse.ok) {
+                        throw new Error(`Erro ao enviar vídeo: ${videoResponse.status}`);
+                    }
+
+                    showNotification('✅ Conteúdo enviado com sucesso para o Discord!', 'success');
+                    form.reset();
+                    currentImageFile = null;
+                    currentVideoFile = null;
+                    imageName.textContent = '';
+                    videoName.textContent = '';
+                    imagePreview.innerHTML = '';
+                    videoPreview.innerHTML = '';
+                    messagePreview.innerHTML = '';
+
+                } catch (error) {
+                    console.error('Erro completo:', error);
+                    showNotification(`❌ Erro ao enviar: ${error.message}`, 'error');
+                    
+                    // Mostrar dados que seriam enviados
+                    const previewData = `
+                        <div style="margin-top: 10px; padding: 10px; background: rgba(244,71,71,0.2); border-radius: 5px;">
+                            <strong>Dados que seriam enviados:</strong><br>
+                            Mensagem: ${message}<br>
+                            Link: ${link}<br>
+                            ${videoLink ? `Link do Vídeo: ${videoLink}<br>` : ''}
+                            Imagem: ${currentImageFile ? currentImageFile.name : 'Nenhum'}<br>
+                            Vídeo: ${currentVideoFile ? currentVideoFile.name : 'Nenhum'}
+                        </div>
+                    `;
+                    messagePreview.innerHTML += previewData;
+                } finally {
+                    // Reabilitar botão
+                    sendButton.disabled = false;
+                    sendButton.style.display = 'block';
+                    loading.style.display = 'none';
+                }
+            });
+            
+            // Função para mostrar notificações
+            function showNotification(message, type) {
+                notification.textContent = message;
+                notification.className = `notification ${type}`;
+                notification.classList.add('show');
+                
+                setTimeout(() => {
+                    notification.classList.remove('show');
+                }, 5000);
+            }
+        });
+    </script>
+</body>
+</html>
