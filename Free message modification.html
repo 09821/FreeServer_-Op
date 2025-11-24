@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Sistema de Key BRANZZ</title>
+    <style>
+        corpo {
+            família de fontes: 'Segoe UI', Tahoma, Genebra, Verdana, sans-serif;
+            fundo: gradiente-linear(para a direita, #1e3c72, #2a5298);
+            cor: #fff;
+            Exibir: flexível;
+            justificar-conteúdo: centralizado;
+            alinhamento-itens: centro;
+            altura mínima: 100vh;
+            margem: 0;
+        }
+
+        .container {
+            cor de fundo: rgba(255, 255, 255, 0.1);
+            raio da borda: 12px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            alinhamento do texto: centralizado;
+            largura: 400px;
+            largura máxima: 90%;
+            preenchimento: 30px;
+            Exibir: flexível;
+            flex-direction: coluna;
+            alinhamento-itens: centro;
+        }
+
+        h1 {
+            cor: #fff;
+            margem-inferior: 20px;
+            tamanho da fonte: 28px;
+            peso da fonte: 600;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        input[type="text"] {
+            preenchimento: 12px;
+            margem: 15px 0;
+            fronteira: nenhuma;
+            raio da borda: 6px;
+            largura: calc(100% - 24px);
+            cor de fundo: rgba(0, 0, 0, 0.2);
+            cor: #fff;
+            tamanho da fonte: 16px;
+            transição: sombra da caixa 0,3s;
+        }
+
+        input[type="text"]:focus {
+            Esboço: nenhum;
+            box-shadow: 0 0 0 2px #00bcd4;
+        }
+
+        botão {
+            preenchimento: 12px 25px;
+            cor de fundo: #00bcd4;
+            Cor: #242424;
+            fronteira: nenhuma;
+            raio da borda: 6px;
+            cursor: ponteiro;
+            tamanho da fonte: 16px;
+            transição: cor de fundo 0,3s, transformação 0,3s;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        botão:passar o mouse {
+            cor de fundo: #008ba7;
+            transformar: translateY(-2px);
+        }
+
+        #painelAdmin {
+            margem superior: 30px;
+            borda superior: 1px sólida rgba(255, 255, 255, 0.1);
+            preenchimento superior: 20px;
+            largura: 100%;
+        }
+
+        iframe {
+            largura: 100%;
+            altura: 400px;
+            borda: 1px sólida rgba(255, 255, 255, 0.1);
+            raio da borda: 8px;
+            margem superior: 20px;
+        }
+
+        /* Estilos para uma transição suave */
+        #telaInicial,
+        #telaVerificacao,
+        #painelAdmin {
+            opacidade: 1;
+            transição: opacidade 0,5s, transformação 0,5s;
+            largura: 100%;
+            /* Adicionado para ocupar a largura total */
+        }
+
+        #telaInicial.oculto,
+        #telaVerificacao.hidden,
+        #painelAdmin.hidden {
+            opacidade: 0;
+            transformar: escala(0,95);
+            eventos-ponteiro: nenhum;
+        }
+
+        /* Esconde as abas */
+        #telaVerificacao,
+        #painelAdmin {
+            exibir: nenhum;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1 id="titulo">Sistema de Key BRANZZ</h1>
+        <div id="telaInicial">
+            <input type="text" id="webhookUsuario" placeholder="Insira seu Webhook">
+            <button id="solicitarKey">Solicitar Chave</button>
+        </div>
+        <div id="telaVerificacao">
+            <input type="text" id="keyUsuario" placeholder="Insira sua Key (BRANZZ_...)">
+            <button id="verificarKey">Verificar chave</button>
+            <iframe id="siteIframe" src="" style="display: none;"></iframe>
+        </div>
+        <div id="painelAdmin">
+            <h2>Painel de Administração</h2>
+            <input type="text" id="webhookAdmin" placeholder="Insira o Webhook do Usuário">
+            <button id="gerarKeyAdmin" style="display: none;">Gerar Chave</button>
+            <p>Insira a chave de acesso:</p>
+            <input type="text" id="chaveAcesso" placeholder="Branzz9890">
+            <button id="validarChave">Validar</button>
+        </div>
+    </div>
+
+    <script>
+        const WEBHOOK_MESTRE = "https://discord.com/api/webhooks/1437991272152432721/cpo97MLe2jV0viTu93kQstUUpKfBptKY6T8lw4J84lcdVECXM3WQNB0N1Sq49QCsU7tu";
+
+        função gerarKey() {
+            const caracteres = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+            let parteAleatoria = '';
+            para (seja i = 0; i < 20; i++) {
+                parteAleatoria += caracteres.charAt(Math.floor(Math.random() * caracteres.length));
+            }
+            return `PROJETO_${parteAleatoria}6(8`;
+        }
+
+        função key_ok() {
+            const caracteres = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+            let parteAleatoria = '';
+            para (seja i = 0; i < 20; i++) {
+                parteAleatoria += caracteres.charAt(Math.floor(Math.random() * caracteres.length));
+            }
+            const finais = ['8)9', '00)8', '88)(9', '8/08'];
+            const final = finais[Math.floor(Math.random() * finais.length)];
+            return `BRANZZ_${parteAleatoria}${final}`;
+        }
+
+        função enviarMensagemWebhook(webhookUrl, dados) {
+            buscar(webhookUrl, {
+                método: 'POST',
+                cabeçalhos: {
+                    'Content-Type': 'application/json'
+                },
+                corpo: JSON.stringify(dados)
+            }).then(response => {
+                se (!response.ok) {
+                    console.error('Erro ao enviar mensagem para', webhookUrl, response.status, response.statusText);
+                } outro {
+                    console.log('Mensagem enviada com sucesso para', webhookUrl);
+                }
+            }).catch(error => {
+                console.error('Erro ao enviar mensagem para', webhookUrl, erro);
+            });
+        }
+
+        // Função para transição suave de tela
+        function transicaoTela(telaAtiva, telaProxima) {
+            telaAtiva.classList.add('oculto');
+            setTimeout(() => {
+                telaAtiva.style.display = 'nenhum';
+                telaProxima.style.display = 'block';
+                setTimeout(() => {
+                    telaProxima.classList.remove('hidden');
+                }, 50); // Pequeno atraso para garantir a transição
+            }, 500);
+        }
+
+        // PAINEL ADM
+        document.getElementById('titulo').addEventListener('dblclick', function() {
+            const painelAdmin = document.getElementById('painelAdmin');
+            se (painelAdmin.style.display === 'nenhum') {
+                painelAdmin.style.display = 'bloco';
+            } outro {
+                painelAdmin.style.display = 'nenhum';
+            }
+        });
+
+        // CHAVE DE SOLICITAÇÃO
+        document.getElementById('solicitarKey').addEventListener('click', function() {
+            const webhookUsuario = document.getElementById('webhookUsuario').value;
+
+            // Mensagem para o mestre do Webhook
+            const mensagemMestre = {
+                incorporações: [{
+                    título: "🔰📣 ATENÇÃO WEEBHOOK MESTRE 🔰📣",
+                    description: `QUEREMOS INFORMAR, Q UM NOVO USUÁRIO ESTA QUERENDO UMA KEY POR FAVOR CRIE A KEY AGORA\nLink do Webhook: [Link](${webhookUsuario})`,
+                    cor: 16776960
+                }]
+            };
+
+            // Mensagem para o Webhook do usuário
+            const mensagemUsuario = {
+                incorporações: [{
+                    título: "PROJETO BRANZZ OK 🔑🔐",
+                    description: "OLA ESSA MENSAGEM E ENVIADA APOS PEDIR PARA GERAR UMA KEY 🔑🔐 PEÇO Q AGUARDE ATE ALGUM DONO GERAR SUA KEY ELA SERA ENVIADA AQUI",
+                    cor: 46094
+                }]
+            };
+
+            enviarMensagemWebhook(WEBHOOK_MESTRE, mensagemMestre);
+            enviarMensagemWebhook(webhookUsuario, mensagemUsuario);
+
+            // Transição para a tela de verificação
+            const telaInicial = document.getElementById('telaInicial');
+            const telaVerificacao = document.getElementById('telaVerificacao');
+            transicaoTela(telaInicial, telaVerificacao);
+        });
+
+        // CHAVE DE VERIFICAÇÃO
+        document.getElementById('verificarKey').addEventListener('click', function() {
+            const keyUsuario = document.getElementById('keyUsuario').value;
+            const keyValida = keyUsuario.startsWith('BRANZZ_') && (keyUsuario.endsWith('8)9') || keyUsuario.endsWith('00)8') || keyUsuario.endsWith('88)(9') || keyUsuario.endsWith('8/08'));
+            se (chaveValida) {
+                document.getElementById('siteIframe').src = "https://htmlpreview.github.io/?https://pastebin.com/raw/uLmfKQVy";
+                document.getElementById('siteIframe').style.display = 'block';
+            } outro {
+                alert('Key inválida!');
+            }
+        });
+
+        // GERAR CHAVE DE ADMINISTRADOR
+        document.getElementById('gerarKeyAdmin').addEventListener('click', function() {
+            const webhookAdmin = document.getElementById('webhookAdmin').value;
+            const novaKey = key_ok();
+
+            const mensagemAdmin = {
+                incorporações: [{
+                    título: "🔑 CHAVE GERADA 🔑",
+                    description: `Sua chave foi gerada com sucesso:\n\`${novaKey}\``,
+                    cor: 65280
+                }]
+            };
+
+            enviarMensagemWebhook(webhookAdmin, mensagemAdmin);
+            setTimeout(() => {
+                const mensagemAdminFinal = {
+                    incorporações: [{
+                        título: "🔑 CHAVE ENVIADA! 🔑",
+                        description: `A chave foi enviada com sucesso:\n\`${novaKey}\``,
+                        cor: 65280
+                    }]
+                };
+                enviarMensagemWebhook(webhookAdmin, mensagemAdminFinal);
+            }, 20000);
+        });
+
+        // Validar Chave de Acesso
+        document.getElementById('validarChave').addEventListener('click', function() {
+            const chaveAcesso = document.getElementById('chaveAcesso').value;
+            if (chaveAcesso === 'Branzz9890') {
+                alert('Chave de acesso validada! Painel de administração liberado.');
+                document.getElementById('gerarKeyAdmin').style.display = 'inline-block';
+                document.getElementById('validarChave').style.display = 'none';
+                document.getElementById('chaveAcesso').style.display = 'none';
+            } outro {
+                alert('Chave de acesso incorreta.');
+            }
+        });
+    </script>
+</body>
+
+</html>
