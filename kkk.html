@@ -1,0 +1,2335 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CORTEX STORE🔥 - A 01 DAS VENDAS</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #ff6b35;
+            --primary-dark: #e55a2b;
+            --secondary: #2d3047;
+            --secondary-light: #3a3d5d;
+            --accent: #00b4d8;
+            --success: #4caf50;
+            --danger: #f44336;
+            --warning: #ff9800;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --gray: #6c757d;
+            --gray-light: #e9ecef;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.2);
+            --transition: all 0.3s ease;
+            --border-radius: 8px;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0c0c0c 0%, #1a1a2e 100%);
+            color: var(--light);
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Partículas animadas no fundo */
+        #particles-js {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: -1;
+        }
+
+        /* Header */
+        header {
+            background: rgba(45, 48, 71, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1.5rem;
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo-container h1 {
+            font-size: 2.5rem;
+            background: linear-gradient(45deg, var(--primary), #ff9e00);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .logo-container h1:hover {
+            transform: scale(1.02);
+        }
+
+        .logo-container .subtitle {
+            font-size: 1rem;
+            color: var(--gray);
+            margin-top: -5px;
+        }
+
+        .cart-container {
+            position: relative;
+        }
+
+        .cart-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: var(--transition);
+        }
+
+        .cart-btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+
+        .cart-count {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: var(--danger);
+            color: white;
+            border-radius: 50%;
+            width: 25px;
+            height: 25px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        /* Main Container */
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        /* Abas de produtos */
+        .tabs-container {
+            background: rgba(45, 48, 71, 0.8);
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            margin-bottom: 2rem;
+        }
+
+        .tabs-header {
+            display: flex;
+            background: var(--secondary);
+            overflow-x: auto;
+            padding: 0.5rem;
+        }
+
+        .tab-btn {
+            padding: 0.8rem 1.5rem;
+            background: transparent;
+            border: none;
+            color: var(--light);
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 500;
+            transition: var(--transition);
+            white-space: nowrap;
+            border-radius: 6px;
+            margin: 0 0.2rem;
+        }
+
+        .tab-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .tab-btn.active {
+            background: var(--primary);
+            color: white;
+        }
+
+        .tab-content {
+            display: none;
+            padding: 1.5rem;
+        }
+
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Produtos */
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1rem;
+        }
+
+        .product-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            transition: var(--transition);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--primary);
+        }
+
+        .product-header {
+            padding: 1rem;
+            background: rgba(0, 0, 0, 0.3);
+        }
+
+        .product-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .product-rarity {
+            display: inline-block;
+            padding: 0.2rem 0.5rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .rarity-common { background: #6b7280; color: white; }
+        .rarity-rare { background: #3b82f6; color: white; }
+        .rarity-epic { background: #8b5cf6; color: white; }
+        .rarity-legendary { background: #f59e0b; color: black; }
+        .rarity-mythic { background: #ef4444; color: white; }
+
+        .product-body {
+            padding: 1rem;
+        }
+
+        .product-description {
+            color: var(--gray-light);
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+            min-height: 40px;
+        }
+
+        .product-stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+            font-size: 0.85rem;
+        }
+
+        .stat-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.3rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .product-footer {
+            padding: 1rem;
+            background: rgba(0, 0, 0, 0.2);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .product-price {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .add-to-cart {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 0.6rem 1.2rem;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            font-weight: 600;
+            transition: var(--transition);
+        }
+
+        .add-to-cart:hover {
+            background: var(--primary-dark);
+            transform: scale(1.05);
+        }
+
+        .add-to-cart:disabled {
+            background: var(--gray);
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: var(--secondary);
+            border-radius: var(--border-radius);
+            width: 90%;
+            max-width: 500px;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+            animation: slideUp 0.3s ease;
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .modal-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .close-btn {
+            background: transparent;
+            border: none;
+            color: var(--light);
+            font-size: 1.5rem;
+            cursor: pointer;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+        }
+
+        .close-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .modal-body {
+            padding: 1.5rem;
+        }
+
+        .step-container {
+            display: none;
+        }
+
+        .step-container.active {
+            display: block;
+        }
+
+        .step-title {
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        /* CAPTCHA */
+        .captcha-container {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 1.5rem;
+            border-radius: var(--border-radius);
+            text-align: center;
+        }
+
+        .captcha-code {
+            font-size: 2.5rem;
+            font-weight: 900;
+            letter-spacing: 10px;
+            background: linear-gradient(45deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin: 1rem 0;
+            padding: 1rem;
+            border: 2px dashed rgba(255, 255, 255, 0.2);
+            border-radius: var(--border-radius);
+            user-select: none;
+        }
+
+        .captcha-controls {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin: 1rem 0;
+        }
+
+        .captcha-input {
+            width: 100%;
+            padding: 0.8rem;
+            border: 2px solid var(--secondary-light);
+            background: rgba(0, 0, 0, 0.3);
+            color: white;
+            border-radius: var(--border-radius);
+            font-size: 1.2rem;
+            text-align: center;
+            margin: 1rem 0;
+        }
+
+        .captcha-input:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        /* Botões de navegação */
+        .modal-footer {
+            padding: 1.5rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .btn {
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            font-weight: 600;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: var(--secondary-light);
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: var(--secondary);
+        }
+
+        .btn-success {
+            background: var(--success);
+            color: white;
+        }
+
+        .btn:disabled {
+            background: var(--gray);
+            cursor: not-allowed;
+            transform: none !important;
+        }
+
+        /* Upload de comprovante */
+        .upload-area {
+            border: 2px dashed var(--accent);
+            border-radius: var(--border-radius);
+            padding: 2rem;
+            text-align: center;
+            margin: 1rem 0;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .upload-area:hover {
+            background: rgba(0, 180, 216, 0.1);
+        }
+
+        .upload-area i {
+            font-size: 3rem;
+            color: var(--accent);
+            margin-bottom: 1rem;
+        }
+
+        #file-input {
+            display: none;
+        }
+
+        .preview-container {
+            margin-top: 1rem;
+        }
+
+        #image-preview {
+            max-width: 100%;
+            max-height: 200px;
+            border-radius: var(--border-radius);
+            display: none;
+        }
+
+        /* ID da compra */
+        .order-id-container {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 1rem;
+            border-radius: var(--border-radius);
+            margin: 1rem 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .order-id {
+            font-family: monospace;
+            font-size: 1.2rem;
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        /* Chat */
+        .chat-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 3000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .chat-overlay.active {
+            display: flex;
+        }
+
+        .chat-container {
+            background: var(--secondary);
+            border-radius: var(--border-radius);
+            width: 90%;
+            max-width: 400px;
+            max-height: 90vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .chat-header {
+            padding: 1rem;
+            background: var(--primary);
+            border-radius: var(--border-radius) var(--border-radius) 0 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .chat-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+
+        .chat-body {
+            flex: 1;
+            padding: 1rem;
+            overflow-y: auto;
+            min-height: 300px;
+            max-height: 400px;
+        }
+
+        .message {
+            margin-bottom: 1rem;
+            padding: 0.8rem;
+            border-radius: var(--border-radius);
+            max-width: 80%;
+        }
+
+        .message.user {
+            background: var(--primary);
+            color: white;
+            margin-left: auto;
+        }
+
+        .message.bot {
+            background: var(--secondary-light);
+            color: white;
+            margin-right: auto;
+        }
+
+        .chat-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .chat-btn {
+            width: 100%;
+            text-align: center;
+        }
+
+        .chat-input-container {
+            padding: 1rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            display: none;
+        }
+
+        .chat-input-container.active {
+            display: block;
+        }
+
+        #chat-input {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid var(--secondary-light);
+            background: rgba(0, 0, 0, 0.3);
+            color: white;
+            border-radius: var(--border-radius);
+        }
+
+        /* Painel Admin */
+        .admin-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 4000;
+            padding: 2rem;
+            overflow-y: auto;
+        }
+
+        .admin-overlay.active {
+            display: block;
+        }
+
+        .admin-container {
+            background: var(--secondary);
+            border-radius: var(--border-radius);
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .admin-header {
+            margin-bottom: 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .admin-tabs {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .admin-tab-btn {
+            padding: 0.8rem 1.5rem;
+            background: var(--secondary-light);
+            border: none;
+            color: white;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+        }
+
+        .admin-tab-btn.active {
+            background: var(--primary);
+        }
+
+        .admin-tab-content {
+            display: none;
+        }
+
+        .admin-tab-content.active {
+            display: block;
+        }
+
+        /* Formulários Admin */
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid var(--secondary-light);
+            background: rgba(0, 0, 0, 0.3);
+            color: white;
+            border-radius: var(--border-radius);
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        /* Tabelas */
+        .table-container {
+            overflow-x: auto;
+            margin-top: 1rem;
+        }
+
+        .admin-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: rgba(0, 0, 0, 0.3);
+        }
+
+        .admin-table th,
+        .admin-table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .admin-table th {
+            background: var(--secondary-light);
+            font-weight: 600;
+        }
+
+        .admin-table tr:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .table-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        /* Notificações Toast */
+        .toast-container {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 5000;
+        }
+
+        .toast {
+            background: var(--secondary);
+            color: white;
+            padding: 1rem 1.5rem;
+            border-radius: var(--border-radius);
+            margin-top: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            box-shadow: var(--shadow-lg);
+            animation: slideInRight 0.3s ease;
+            min-width: 300px;
+        }
+
+        @keyframes slideInRight {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        .toast.success { border-left: 4px solid var(--success); }
+        .toast.error { border-left: 4px solid var(--danger); }
+        .toast.warning { border-left: 4px solid var(--warning); }
+        .toast.info { border-left: 4px solid var(--accent); }
+
+        /* Responsividade */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .products-grid {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .admin-container {
+                padding: 1rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .logo-container h1 {
+                font-size: 2rem;
+            }
+
+            .products-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .modal-content {
+                width: 95%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Partículas animadas -->
+    <div id="particles-js"></div>
+
+    <!-- Header -->
+    <header>
+        <div class="header-content">
+            <div class="logo-container">
+                <h1 id="store-title">CORTEX STORE🔥</h1>
+                <div class="subtitle">FUNDADOR: BRANZZ_BR</div>
+            </div>
+            <div class="cart-container">
+                <button class="cart-btn" id="cart-btn">
+                    <i class="fas fa-shopping-cart"></i>
+                    Carrinho
+                    <span class="cart-count" id="cart-count">0</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Abas de produtos -->
+        <div class="tabs-container">
+            <div class="tabs-header" id="tabs-header">
+                <!-- Abas serão geradas dinamicamente -->
+            </div>
+            <div id="tabs-content">
+                <!-- Conteúdo das abas será gerado dinamicamente -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Compra -->
+    <div class="modal" id="checkout-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">Finalizar Compra</h2>
+                <button class="close-btn" id="close-modal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <!-- Passo 1: CAPTCHA -->
+                <div class="step-container active" id="step-1">
+                    <div class="step-title">
+                        <i class="fas fa-robot"></i>
+                        Passo 1: Verificação CAPTCHA
+                    </div>
+                    <div class="captcha-container">
+                        <p>Digite o código abaixo para provar que não é um robô:</p>
+                        <div class="captcha-code" id="captcha-display">ABCD12</div>
+                        <div class="captcha-controls">
+                            <button class="btn btn-secondary" id="refresh-captcha">
+                                <i class="fas fa-redo"></i> Novo Código
+                            </button>
+                            <button class="btn btn-secondary" id="audio-captcha">
+                                <i class="fas fa-volume-up"></i> Ouvir Código
+                            </button>
+                        </div>
+                        <input type="text" class="captcha-input" id="captcha-input" 
+                               placeholder="Digite o código aqui" maxlength="6">
+                        <p id="captcha-error" style="color: var(--danger); display: none;">
+                            Código incorreto! Tente novamente.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Passo 2: PIX e Comprovante -->
+                <div class="step-container" id="step-2">
+                    <div class="step-title">
+                        <i class="fas fa-qrcode"></i>
+                        Passo 2: Pagamento PIX
+                    </div>
+                    <div class="order-id-container">
+                        <div>
+                            <strong>ID da Compra:</strong>
+                            <div class="order-id" id="order-id-display">BRANZZ_BR-CODE=00000</div>
+                        </div>
+                        <button class="btn btn-secondary" id="copy-order-id">
+                            <i class="far fa-copy"></i> Copiar
+                        </button>
+                    </div>
+                    
+                    <p><strong>Chave PIX:</strong></p>
+                    <div class="order-id-container">
+                        <code>8a5850c2-3987-4c18-8197-37f93739d9ec</code>
+                        <button class="btn btn-secondary" id="copy-pix">
+                            <i class="far fa-copy"></i> Copiar
+                        </button>
+                    </div>
+                    
+                    <p><strong>Nome do beneficiário:</strong> Bruno Teixeira De Carvalho</p>
+                    
+                    <div class="upload-area" id="upload-area">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                        <p>Clique aqui ou arraste o comprovante PIX</p>
+                        <input type="file" id="file-input" accept="image/*">
+                    </div>
+                    
+                    <div class="preview-container">
+                        <img id="image-preview" alt="Preview do comprovante">
+                    </div>
+                    
+                    <div id="verification-result"></div>
+                </div>
+
+                <!-- Passo 3: Conclusão -->
+                <div class="step-container" id="step-3">
+                    <div class="step-title">
+                        <i class="fas fa-check-circle"></i>
+                        Passo 3: Conclusão
+                    </div>
+                    <p>✅ Pagamento verificado com sucesso!</p>
+                    <p>Guarde o ID da compra: <strong id="final-order-id"></strong></p>
+                    <p>Agora você pode:</p>
+                    <div class="chat-buttons">
+                        <button class="btn btn-primary chat-btn" id="open-chat-support">
+                            <i class="fas fa-headset"></i> Falar com Suporte
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" id="prev-step" disabled>
+                    <i class="fas fa-arrow-left"></i> Anterior
+                </button>
+                <button class="btn btn-primary" id="next-step" disabled>
+                    Próximo <i class="fas fa-arrow-right"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Chat Integrado -->
+    <div class="chat-overlay" id="chat-overlay">
+        <div class="chat-container">
+            <div class="chat-header">
+                <div class="chat-title">Suporte CORTEX STORE</div>
+                <button class="close-btn" id="close-chat">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="chat-body" id="chat-body">
+                <!-- Mensagens do chat aparecerão aqui -->
+                <div class="message bot">
+                    Olá! Como posso ajudá-lo hoje?
+                </div>
+            </div>
+            <div class="chat-buttons" id="initial-buttons">
+                <button class="btn btn-primary chat-btn" id="chat-buy-btn">
+                    <i class="fas fa-shopping-cart"></i> Iniciar uma Compra
+                </button>
+                <button class="btn btn-secondary chat-btn" id="chat-support-btn">
+                    <i class="fas fa-headset"></i> Falar com Suporte
+                </button>
+            </div>
+            <div class="chat-input-container" id="chat-input-container">
+                <input type="text" id="chat-input" placeholder="Digite sua mensagem...">
+            </div>
+        </div>
+    </div>
+
+    <!-- Painel Admin -->
+    <div class="admin-overlay" id="admin-overlay">
+        <div class="admin-container">
+            <div class="admin-header">
+                <h2>Painel Admin - CORTEX STORE</h2>
+                <button class="btn btn-danger" id="close-admin">
+                    <i class="fas fa-times"></i> Fechar
+                </button>
+            </div>
+            
+            <div class="admin-tabs">
+                <button class="admin-tab-btn active" data-tab="products">Produtos</button>
+                <button class="admin-tab-btn" data-tab="tabs">Abas/Lojas</button>
+                <button class="admin-tab-btn" data-tab="orders">Pedidos</button>
+                <button class="admin-tab-btn" data-tab="chat-admin">Chat Admin</button>
+                <button class="admin-tab-btn" data-tab="settings">Configurações</button>
+            </div>
+            
+            <!-- Aba de Produtos -->
+            <div class="admin-tab-content active" id="products-tab">
+                <h3>Gerenciar Produtos</h3>
+                <form id="product-form">
+                    <input type="hidden" id="product-id">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Tipo de Produto</label>
+                            <select class="form-control" id="product-type">
+                                <option value="normal">Produto Normal</option>
+                                <option value="brainrot">Brainrot</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Aba</label>
+                            <select class="form-control" id="product-tab"></select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Nome</label>
+                            <input type="text" class="form-control" id="product-name" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Preço (R$)</label>
+                            <input type="number" class="form-control" id="product-price" min="0" step="0.01" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Descrição</label>
+                        <textarea class="form-control" id="product-description" rows="3"></textarea>
+                    </div>
+                    
+                    <!-- Campos específicos para Brainrots -->
+                    <div id="brainrot-fields" style="display: none;">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label">Raridade</label>
+                                <select class="form-control" id="product-rarity">
+                                    <option value="common">Comum</option>
+                                    <option value="rare">Raro</option>
+                                    <option value="epic">Épico</option>
+                                    <option value="legendary">Lendário</option>
+                                    <option value="mythic">Mítico</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Geração por Segundo</label>
+                                <input type="number" class="form-control" id="product-generation" min="0" value="1">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label">Mutação</label>
+                                <input type="text" class="form-control" id="product-mutation">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Traits (separar por vírgula)</label>
+                                <input type="text" class="form-control" id="product-traits">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Quantidade em Estoque</label>
+                            <input type="number" class="form-control" id="product-stock" min="0" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Imagem (URL)</label>
+                            <input type="text" class="form-control" id="product-image" placeholder="https://...">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save"></i> Salvar Produto
+                        </button>
+                        <button type="button" class="btn btn-secondary" id="clear-form">
+                            <i class="fas fa-times"></i> Limpar
+                        </button>
+                    </div>
+                </form>
+                
+                <div class="table-container">
+                    <h4>Produtos Cadastrados</h4>
+                    <table class="admin-table" id="products-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Nome</th>
+                                <th>Tipo</th>
+                                <th>Aba</th>
+                                <th>Preço</th>
+                                <th>Estoque</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody id="products-table-body">
+                            <!-- Produtos serão listados aqui -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <!-- Aba de Abas/Lojas -->
+            <div class="admin-tab-content" id="tabs-tab">
+                <h3>Gerenciar Abas/Lojas</h3>
+                <form id="tab-form">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Nome da Aba</label>
+                            <input type="text" class="form-control" id="tab-name" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">ID da Aba (sem espaços)</label>
+                            <input type="text" class="form-control" id="tab-id" required>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-plus"></i> Adicionar Aba
+                    </button>
+                </form>
+                
+                <div class="table-container">
+                    <h4>Abas Cadastradas</h4>
+                    <table class="admin-table" id="tabs-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Nome</th>
+                                <th>Produtos</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tabs-table-body">
+                            <!-- Abas serão listadas aqui -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <!-- Aba de Pedidos -->
+            <div class="admin-tab-content" id="orders-tab">
+                <h3>Pedidos Realizados</h3>
+                <div class="table-container">
+                    <table class="admin-table" id="orders-table">
+                        <thead>
+                            <tr>
+                                <th>ID da Compra</th>
+                                <th>Produtos</th>
+                                <th>Valor Total</th>
+                                <th>Data</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="orders-table-body">
+                            <!-- Pedidos serão listados aqui -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <!-- Aba de Chat Admin -->
+            <div class="admin-tab-content" id="chat-admin-tab">
+                <h3>Chat em Tempo Real</h3>
+                <div id="admin-chat-container" style="height: 400px; overflow-y: auto; background: rgba(0,0,0,0.3); padding: 1rem; border-radius: var(--border-radius);">
+                    <!-- Mensagens do chat aparecerão aqui -->
+                    <div id="admin-chat-messages"></div>
+                </div>
+                <div style="margin-top: 1rem;">
+                    <input type="text" id="admin-chat-input" class="form-control" placeholder="Digite uma mensagem..." style="margin-bottom: 0.5rem;">
+                    <button class="btn btn-primary" id="admin-chat-send">
+                        <i class="fas fa-paper-plane"></i> Enviar
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Aba de Configurações -->
+            <div class="admin-tab-content" id="settings-tab">
+                <h3>Configurações do Sistema</h3>
+                <form id="settings-form">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Senha Admin</label>
+                            <input type="password" class="form-control" id="admin-password" value="BRAINZBR_ADMIN_2024">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Chave PIX</label>
+                            <input type="text" class="form-control" id="pix-key" value="8a5850c2-3987-4c18-8197-37f93739d9ec">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Nome do Beneficiário</label>
+                            <input type="text" class="form-control" id="pix-name" value="Bruno Teixeira De Carvalho">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Webhook URL</label>
+                            <input type="text" class="form-control" id="webhook-url" value="https://media.guilded.gg/webhooks/b9453e99-729b-4673-9787-e43828658d2c/MpyC72zyucA86weM2SwyIWIekWuM4iyUuAuyscsEwikiAmmmG0U0wcykuEIuWA4WSSUmi6OUyq0WOk2isWcemC">
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save"></i> Salvar Configurações
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Container de Notificações Toast -->
+    <div class="toast-container" id="toast-container"></div>
+
+    <script>
+        // =============================================
+        // VARIÁVEIS GLOBAIS E CONFIGURAÇÕES
+        // =============================================
+        const CONFIG = {
+            ADMIN_PASSWORD: "BRAINZBR_ADMIN_2024",
+            PIX_KEY: "8a5850c2-3987-4c18-8197-37f93739d9ec",
+            PIX_NAME: "Bruno Teixeira De Carvalho",
+            WEBHOOK_URL: "https://media.guilded.gg/webhooks/b9453e99-729b-4673-9787-e43828658d2c/MpyC72zyucA86weM2SwyIWIekWuM4iyUuAuyscsEwikiAmmmG0U0wcykuEIuWA4WSSUmi6OUyq0WOk2isWcemC"
+        };
+
+        let cart = JSON.parse(localStorage.getItem('cart')) || [];
+        let products = JSON.parse(localStorage.getItem('products')) || [];
+        let tabs = JSON.parse(localStorage.getItem('tabs')) || [];
+        let orders = JSON.parse(localStorage.getItem('orders')) || [];
+        let chatMessages = JSON.parse(localStorage.getItem('chatMessages')) || [];
+        let currentStep = 1;
+        let currentOrderId = '';
+        let currentCaptcha = '';
+        let adminChatUsers = [];
+        let adminClickCount = 0;
+        let adminClickTimeout = null;
+
+        // =============================================
+        // FUNÇÕES DE UTILIDADE
+        // =============================================
+
+        function showToast(message, type = 'info') {
+            const toastContainer = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            toast.innerHTML = `
+                <i class="fas fa-${type === 'success' ? 'check-circle' : type === 'error' ? 'exclamation-circle' : type === 'warning' ? 'exclamation-triangle' : 'info-circle'}"></i>
+                <span>${message}</span>
+            `;
+            toastContainer.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.transform = 'translateX(100%)';
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+
+        function saveToLocalStorage() {
+            localStorage.setItem('cart', JSON.stringify(cart));
+            localStorage.setItem('products', JSON.stringify(products));
+            localStorage.setItem('tabs', JSON.stringify(tabs));
+            localStorage.setItem('orders', JSON.stringify(orders));
+            localStorage.setItem('chatMessages', JSON.stringify(chatMessages));
+        }
+
+        function generateOrderId() {
+            return `BRANZZ_BR-CODE=${Math.floor(10000 + Math.random() * 90000)}`;
+        }
+
+        function generateCaptcha() {
+            const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+            let result = '';
+            for (let i = 0; i < 6; i++) {
+                result += chars.charAt(Math.floor(Math.random() * chars.length));
+            }
+            return result;
+        }
+
+        // =============================================
+        // INICIALIZAÇÃO DO SISTEMA
+        // =============================================
+
+        function initSystem() {
+            // Criar dados iniciais se não existirem
+            if (tabs.length === 0) {
+                tabs = [
+                    { id: 'brainrots', name: 'Brainrots', products: [] },
+                    { id: 'produtos', name: 'Produtos Normais', products: [] },
+                    { id: 'vips', name: 'VIPs', products: [] }
+                ];
+            }
+
+            if (products.length === 0) {
+                products = [
+                    {
+                        id: 'brainrot-1',
+                        name: 'Brainrot Épico',
+                        type: 'brainrot',
+                        tabId: 'brainrots',
+                        description: 'Um brainrot épico com poderes especiais',
+                        price: 99.99,
+                        stock: 10,
+                        rarity: 'epic',
+                        generation: 5,
+                        mutation: 'Velocidade Aprimorada',
+                        traits: ['Rápido', 'Inteligente', 'Poderoso'],
+                        image: ''
+                    },
+                    {
+                        id: 'produto-1',
+                        name: 'Produto Premium',
+                        type: 'normal',
+                        tabId: 'produtos',
+                        description: 'Um produto normal de alta qualidade',
+                        price: 49.99,
+                        stock: 20,
+                        image: ''
+                    }
+                ];
+            }
+
+            saveToLocalStorage();
+            renderTabs();
+            renderProducts();
+            updateCartCount();
+            generateNewCaptcha();
+        }
+
+        // =============================================
+        // RENDERIZAÇÃO DA INTERFACE
+        // =============================================
+
+        function renderTabs() {
+            const tabsHeader = document.getElementById('tabs-header');
+            const tabsContent = document.getElementById('tabs-content');
+            
+            tabsHeader.innerHTML = '';
+            tabsContent.innerHTML = '';
+            
+            tabs.forEach((tab, index) => {
+                // Botão da aba
+                const tabBtn = document.createElement('button');
+                tabBtn.className = `tab-btn ${index === 0 ? 'active' : ''}`;
+                tabBtn.textContent = tab.name;
+                tabBtn.dataset.tabId = tab.id;
+                tabBtn.addEventListener('click', () => switchTab(tab.id));
+                tabsHeader.appendChild(tabBtn);
+                
+                // Conteúdo da aba
+                const tabContent = document.createElement('div');
+                tabContent.className = `tab-content ${index === 0 ? 'active' : ''}`;
+                tabContent.id = `tab-${tab.id}`;
+                tabsContent.appendChild(tabContent);
+            });
+            
+            // Renderizar produtos em cada aba
+            renderProducts();
+        }
+
+        function renderProducts() {
+            tabs.forEach(tab => {
+                const tabContent = document.getElementById(`tab-${tab.id}`);
+                if (!tabContent) return;
+                
+                const tabProducts = products.filter(p => p.tabId === tab.id);
+                
+                if (tabProducts.length === 0) {
+                    tabContent.innerHTML = '<p style="text-align: center; padding: 2rem;">Nenhum produto nesta categoria.</p>';
+                    return;
+                }
+                
+                const productsGrid = document.createElement('div');
+                productsGrid.className = 'products-grid';
+                
+                tabProducts.forEach(product => {
+                    const productCard = document.createElement('div');
+                    productCard.className = 'product-card';
+                    
+                    let productHtml = `
+                        <div class="product-header">
+                            <div class="product-title">${product.name}</div>
+                    `;
+                    
+                    if (product.type === 'brainrot') {
+                        const rarityClasses = {
+                            common: 'rarity-common',
+                            rare: 'rarity-rare',
+                            epic: 'rarity-epic',
+                            legendary: 'rarity-legendary',
+                            mythic: 'rarity-mythic'
+                        };
+                        productHtml += `
+                            <span class="product-rarity ${rarityClasses[product.rarity]}">
+                                ${product.rarity}
+                            </span>
+                        `;
+                    }
+                    
+                    productHtml += `
+                        </div>
+                        <div class="product-body">
+                            <div class="product-description">${product.description}</div>
+                    `;
+                    
+                    if (product.type === 'brainrot') {
+                        productHtml += `
+                            <div class="product-stats">
+                                <div class="stat-item">
+                                    <span>Geração/s:</span>
+                                    <span>${product.generation}</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span>Mutação:</span>
+                                    <span>${product.mutation}</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span>Traits:</span>
+                                    <span>${product.traits ? product.traits.join(', ') : 'Nenhum'}</span>
+                                </div>
+                            </div>
+                        `;
+                    }
+                    
+                    productHtml += `
+                        </div>
+                        <div class="product-footer">
+                            <div class="product-price">R$ ${product.price.toFixed(2)}</div>
+                            <button class="add-to-cart" data-product-id="${product.id}" 
+                                    ${product.stock <= 0 ? 'disabled' : ''}>
+                                ${product.stock <= 0 ? 'Sem Estoque' : 'Adicionar ao Carrinho'}
+                            </button>
+                        </div>
+                    `;
+                    
+                    productCard.innerHTML = productHtml;
+                    productsGrid.appendChild(productCard);
+                });
+                
+                tabContent.innerHTML = '';
+                tabContent.appendChild(productsGrid);
+            });
+            
+            // Adicionar event listeners aos botões
+            document.querySelectorAll('.add-to-cart').forEach(button => {
+                button.addEventListener('click', function() {
+                    const productId = this.dataset.productId;
+                    addToCart(productId);
+                });
+            });
+        }
+
+        function switchTab(tabId) {
+            // Remover active de todas as abas
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            
+            // Adicionar active à aba clicada
+            document.querySelector(`.tab-btn[data-tab-id="${tabId}"]`).classList.add('active');
+            document.getElementById(`tab-${tabId}`).classList.add('active');
+        }
+
+        // =============================================
+        // SISTEMA DE CARRINHO
+        // =============================================
+
+        function addToCart(productId) {
+            const product = products.find(p => p.id === productId);
+            if (!product) return;
+            
+            if (product.stock <= 0) {
+                showToast('Produto sem estoque!', 'error');
+                return;
+            }
+            
+            const cartItem = cart.find(item => item.productId === productId);
+            
+            if (cartItem) {
+                if (cartItem.quantity < product.stock) {
+                    cartItem.quantity++;
+                } else {
+                    showToast('Estoque insuficiente!', 'error');
+                    return;
+                }
+            } else {
+                cart.push({
+                    productId: productId,
+                    quantity: 1,
+                    product: product
+                });
+            }
+            
+            updateCartCount();
+            saveToLocalStorage();
+            showToast(`${product.name} adicionado ao carrinho!`, 'success');
+        }
+
+        function updateCartCount() {
+            const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+            document.getElementById('cart-count').textContent = totalItems;
+        }
+
+        // =============================================
+        // SISTEMA DE COMPRA (4 PASSOS)
+        // =============================================
+
+        function startCheckout() {
+            if (cart.length === 0) {
+                showToast('Carrinho vazio!', 'error');
+                return;
+            }
+            
+            currentStep = 1;
+            currentOrderId = generateOrderId();
+            
+            document.getElementById('order-id-display').textContent = currentOrderId;
+            document.getElementById('final-order-id').textContent = currentOrderId;
+            
+            // Mostrar todos os passos e ativar o primeiro
+            document.querySelectorAll('.step-container').forEach((step, index) => {
+                step.classList.remove('active');
+                if (index === 0) step.classList.add('active');
+            });
+            
+            // Resetar botões
+            document.getElementById('prev-step').disabled = true;
+            document.getElementById('next-step').disabled = true;
+            
+            // Resetar comprovante
+            document.getElementById('image-preview').style.display = 'none';
+            document.getElementById('verification-result').innerHTML = '';
+            
+            // Mostrar modal
+            document.getElementById('checkout-modal').classList.add('active');
+        }
+
+        function nextStep() {
+            if (currentStep >= 3) return;
+            
+            if (currentStep === 1) {
+                const input = document.getElementById('captcha-input').value.toUpperCase();
+                if (input !== currentCaptcha) {
+                    document.getElementById('captcha-error').style.display = 'block';
+                    return;
+                }
+                document.getElementById('captcha-error').style.display = 'none';
+            }
+            
+            if (currentStep === 2) {
+                // Verificar se comprovante foi enviado
+                const fileInput = document.getElementById('file-input');
+                if (!fileInput.files[0]) {
+                    showToast('Faça upload do comprovante PIX!', 'error');
+                    return;
+                }
+                
+                // Simular verificação com IA
+                const verificationResult = document.getElementById('verification-result');
+                verificationResult.innerHTML = `
+                    <div style="background: rgba(76, 175, 80, 0.2); padding: 1rem; border-radius: var(--border-radius); margin-top: 1rem; border-left: 4px solid var(--success);">
+                        <i class="fas fa-check-circle" style="color: var(--success);"></i>
+                        <strong>Comprovante verificado com sucesso!</strong>
+                        <p>Pagamento confirmado para: ${CONFIG.PIX_NAME}</p>
+                    </div>
+                `;
+                
+                document.getElementById('next-step').innerHTML = 'Concluir <i class="fas fa-check"></i>';
+            }
+            
+            currentStep++;
+            
+            // Atualizar exibição dos passos
+            document.querySelectorAll('.step-container').forEach(step => step.classList.remove('active'));
+            document.getElementById(`step-${currentStep}`).classList.add('active');
+            
+            // Atualizar botões
+            document.getElementById('prev-step').disabled = currentStep === 1;
+            
+            if (currentStep === 3) {
+                // Processar compra
+                processOrder();
+                document.getElementById('next-step').style.display = 'none';
+            }
+        }
+
+        function prevStep() {
+            if (currentStep <= 1) return;
+            
+            currentStep--;
+            
+            // Atualizar exibição dos passos
+            document.querySelectorAll('.step-container').forEach(step => step.classList.remove('active'));
+            document.getElementById(`step-${currentStep}`).classList.add('active');
+            
+            // Atualizar botões
+            document.getElementById('prev-step').disabled = currentStep === 1;
+            document.getElementById('next-step').disabled = false;
+            document.getElementById('next-step').innerHTML = 'Próximo <i class="fas fa-arrow-right"></i>';
+            document.getElementById('next-step').style.display = 'block';
+        }
+
+        function processOrder() {
+            const total = cart.reduce((sum, item) => sum + (item.product.price * item.quantity), 0);
+            
+            // Atualizar estoque
+            cart.forEach(item => {
+                const product = products.find(p => p.id === item.productId);
+                if (product) {
+                    product.stock -= item.quantity;
+                }
+            });
+            
+            // Criar pedido
+            const order = {
+                id: currentOrderId,
+                date: new Date().toISOString(),
+                items: [...cart],
+                total: total,
+                status: 'Concluído'
+            };
+            
+            orders.push(order);
+            
+            // Limpar carrinho
+            cart = [];
+            updateCartCount();
+            
+            // Salvar dados
+            saveToLocalStorage();
+            renderProducts();
+            
+            // Enviar webhook
+            sendWebhook(order);
+            
+            showToast('Compra realizada com sucesso!', 'success');
+        }
+
+        // =============================================
+        // SISTEMA CAPTCHA
+        // =============================================
+
+        function generateNewCaptcha() {
+            currentCaptcha = generateCaptcha();
+            document.getElementById('captcha-display').textContent = currentCaptcha;
+            document.getElementById('captcha-input').value = '';
+            document.getElementById('captcha-error').style.display = 'none';
+            
+            // Habilitar/desabilitar botão próximo baseado no input
+            document.getElementById('captcha-input').addEventListener('input', function() {
+                const input = this.value.toUpperCase();
+                const nextBtn = document.getElementById('next-step');
+                nextBtn.disabled = input.length !== 6;
+                
+                if (input === currentCaptcha) {
+                    nextBtn.disabled = false;
+                    document.getElementById('captcha-error').style.display = 'none';
+                }
+            });
+        }
+
+        function playCaptchaAudio() {
+            const utterance = new SpeechSynthesisUtterance(currentCaptcha.split('').join(' '));
+            utterance.lang = 'en-US';
+            utterance.rate = 0.8;
+            speechSynthesis.speak(utterance);
+        }
+
+        // =============================================
+        // SISTEMA DE UPLOAD
+        // =============================================
+
+        function setupUpload() {
+            const uploadArea = document.getElementById('upload-area');
+            const fileInput = document.getElementById('file-input');
+            const imagePreview = document.getElementById('image-preview');
+            
+            uploadArea.addEventListener('click', () => fileInput.click());
+            
+            uploadArea.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                uploadArea.style.background = 'rgba(0, 180, 216, 0.2)';
+            });
+            
+            uploadArea.addEventListener('dragleave', () => {
+                uploadArea.style.background = '';
+            });
+            
+            uploadArea.addEventListener('drop', (e) => {
+                e.preventDefault();
+                uploadArea.style.background = '';
+                
+                if (e.dataTransfer.files.length) {
+                    fileInput.files = e.dataTransfer.files;
+                    handleFileSelect(e.dataTransfer.files[0]);
+                }
+            });
+            
+            fileInput.addEventListener('change', (e) => {
+                if (e.target.files.length) {
+                    handleFileSelect(e.target.files[0]);
+                }
+            });
+            
+            function handleFileSelect(file) {
+                if (!file.type.match('image.*')) {
+                    showToast('Apenas imagens são permitidas!', 'error');
+                    return;
+                }
+                
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    imagePreview.src = e.target.result;
+                    imagePreview.style.display = 'block';
+                    
+                    // Habilitar próximo passo
+                    document.getElementById('next-step').disabled = false;
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        // =============================================
+        // SISTEMA DE WEBHOOK
+        // =============================================
+
+        async function sendWebhook(order) {
+            try {
+                // Coletar informações do usuário
+                const userInfo = await getUserInfo();
+                const productsList = order.items.map(item => 
+                    `${item.product.name} x${item.quantity}`
+                ).join(', ');
+                
+                // Criar embed para Discord/Guilded
+                const embed = {
+                    title: "@todos @ aqui ✅ NOVA COMPRA FOI ENVIADA @everyone @here✅ @everyone~1  @here~2",
+                    description: "@everyone @here",
+                    color: 0x00FF00,
+                    fields: [
+                        {
+                            name: "🛒 ID DA COMPRA",
+                            value: order.id,
+                            inline: false
+                        },
+                        {
+                            name: "📦 PRODUTO(S)",
+                            value: productsList || "Nenhum produto",
+                            inline: false
+                        },
+                        {
+                            name: "💰 VALOR TOTAL",
+                            value: `R$ ${order.total.toFixed(2)}`,
+                            inline: true
+                        },
+                        {
+                            name: "🌍 INFORMAÇÕES",
+                            value: `
+                            IP: ${userInfo.ip || 'Não disponível'}
+                            País: ${userInfo.country || 'Não disponível'}
+                            Região: ${userInfo.region || 'Não disponível'}
+                            Cidade: ${userInfo.city || 'Não disponível'}
+                            Navegador: ${userInfo.browser || 'Não disponível'}
+                            Dispositivo: ${userInfo.device || 'Não disponível'}
+                            `,
+                            inline: false
+                        },
+                        {
+                            name: "⌛ DATA E HORA",
+                            value: new Date().toLocaleString('pt-BR'),
+                            inline: false
+                        }
+                    ],
+                    footer: {
+                        text: `BY PROJECT CORTEX | ${new Date().toLocaleString('pt-BR')}`
+                    },
+                    timestamp: new Date().toISOString()
+                };
+                
+                // Enviar usando método tradicional de formulário
+                await sendWithForm({
+                    content: "@everyone @here TESTE!! NOVO ALVO !! @todos @aqui",
+                    embeds: [embed]
+                });
+                
+                showToast('Notificação enviada para webhook!', 'success');
+                
+            } catch (error) {
+                console.error('Erro ao enviar webhook:', error);
+                showToast('Erro ao enviar notificação', 'error');
+            }
+        }
+
+        async function getUserInfo() {
+            try {
+                // Usar serviço para obter IP
+                const ipResponse = await fetch('https://api.ipify.org?format=json');
+                const ipData = await ipResponse.json();
+                
+                // Tentar obter localização (pode não funcionar em todos os navegadores)
+                let locationInfo = {};
+                try {
+                    const locationResponse = await fetch(`https://ipapi.co/${ipData.ip}/json/`);
+                    locationInfo = await locationResponse.json();
+                } catch (e) {
+                    console.log('Não foi possível obter localização:', e);
+                }
+                
+                // Informações do navegador
+                const browserInfo = {
+                    browser: navigator.userAgent,
+                    device: /Mobile/.test(navigator.userAgent) ? 'Mobile' : 'Desktop'
+                };
+                
+                return {
+                    ip: ipData.ip,
+                    country: locationInfo.country_name,
+                    region: locationInfo.region,
+                    city: locationInfo.city,
+                    browser: navigator.userAgent.substring(0, 100),
+                    device: browserInfo.device
+                };
+                
+            } catch (error) {
+                console.error('Erro ao obter informações:', error);
+                return {
+                    ip: 'Não disponível',
+                    country: 'Não disponível',
+                    region: 'Não disponível',
+                    city: 'Não disponível',
+                    browser: navigator.userAgent.substring(0, 100),
+                    device: /Mobile/.test(navigator.userAgent) ? 'Mobile' : 'Desktop'
+                };
+            }
+        }
+
+        function sendWithForm(data) {
+            return new Promise((resolve, reject) => {
+                // Criar iframe para resposta
+                const iframe = document.createElement('iframe');
+                iframe.style.display = 'none';
+                iframe.name = 'webhook-iframe-' + Date.now();
+                document.body.appendChild(iframe);
+                
+                // Criar formulário
+                const form = document.createElement('form');
+                form.target = iframe.name;
+                form.action = CONFIG.WEBHOOK_URL;
+                form.method = 'POST';
+                form.enctype = 'application/x-www-form-urlencoded';
+                
+                // Adicionar campo com dados
+                const input = document.createElement('input');
+                input.type = 'hidden';
+                input.name = 'payload_json';
+                input.value = JSON.stringify(data);
+                form.appendChild(input);
+                
+                // Configurar eventos
+                iframe.onload = function() {
+                    setTimeout(() => {
+                        document.body.removeChild(iframe);
+                        document.body.removeChild(form);
+                        resolve({ success: true });
+                    }, 1000);
+                };
+                
+                iframe.onerror = function() {
+                    document.body.removeChild(iframe);
+                    document.body.removeChild(form);
+                    reject(new Error('Erro ao enviar formulário'));
+                };
+                
+                // Enviar
+                document.body.appendChild(form);
+                form.submit();
+            });
+        }
+
+        // =============================================
+        // SISTEMA DE CHAT INTEGRADO
+        // =============================================
+
+        function openChat() {
+            document.getElementById('chat-overlay').classList.add('active');
+            document.getElementById('initial-buttons').style.display = 'flex';
+            document.getElementById('chat-input-container').classList.remove('active');
+            
+            // Limpar mensagens anteriores
+            const chatBody = document.getElementById('chat-body');
+            chatBody.innerHTML = '<div class="message bot">Olá! Como posso ajudá-lo hoje?</div>';
+        }
+
+        function sendChatMessage(message, isUser = true) {
+            const chatBody = document.getElementById('chat-body');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${isUser ? 'user' : 'bot'}`;
+            messageDiv.textContent = message;
+            chatBody.appendChild(messageDiv);
+            chatBody.scrollTop = chatBody.scrollHeight;
+            
+            // Salvar mensagem
+            chatMessages.push({
+                message: message,
+                isUser: isUser,
+                timestamp: new Date().toISOString()
+            });
+            
+            if (isUser) {
+                // Notificar admin (simulado)
+                notifyAdmin(message);
+                
+                // Resposta automática
+                setTimeout(() => {
+                    if (message.toLowerCase().includes('suporte') || message.toLowerCase().includes('ajuda')) {
+                        sendChatMessage('Olá, espere um dos ADMs abrir o chat. Digite "+unlock" se for um ADM.', false);
+                    }
+                }, 1000);
+            }
+        }
+
+        function notifyAdmin(message) {
+            // Em um sistema real, isso notificaria os admins
+            console.log('Nova mensagem do usuário:', message);
+            
+            // Atualizar chat admin se estiver aberto
+            updateAdminChat();
+        }
+
+        function updateAdminChat() {
+            const adminChat = document.getElementById('admin-chat-messages');
+            if (!adminChat) return;
+            
+            adminChat.innerHTML = chatMessages.map(msg => 
+                `<div style="margin-bottom: 0.5rem; padding: 0.5rem; background: ${msg.isUser ? 'rgba(255,107,53,0.2)' : 'rgba(0,180,216,0.2)'}; border-radius: var(--border-radius);">
+                    <strong>${msg.isUser ? 'Usuário' : 'Bot'}:</strong> ${msg.message}
+                    <small style="display: block; opacity: 0.7;">${new Date(msg.timestamp).toLocaleTimeString()}</small>
+                </div>`
+            ).join('');
+            
+            adminChat.scrollTop = adminChat.scrollHeight;
+        }
+
+        // =============================================
+        // PAINEL ADMIN
+        // =============================================
+
+        function openAdminPanel() {
+            const password = prompt('Digite a senha de administrador:');
+            if (password !== CONFIG.ADMIN_PASSWORD) {
+                showToast('Senha incorreta!', 'error');
+                return;
+            }
+            
+            document.getElementById('admin-overlay').classList.add('active');
+            loadAdminData();
+        }
+
+        function loadAdminData() {
+            // Carregar produtos
+            const productsTable = document.getElementById('products-table-body');
+            productsTable.innerHTML = products.map(product => `
+                <tr>
+                    <td>${product.id}</td>
+                    <td>${product.name}</td>
+                    <td>${product.type === 'brainrot' ? 'Brainrot' : 'Normal'}</td>
+                    <td>${tabs.find(t => t.id === product.tabId)?.name || 'N/A'}</td>
+                    <td>R$ ${product.price.toFixed(2)}</td>
+                    <td>${product.stock}</td>
+                    <td class="table-actions">
+                        <button class="btn btn-secondary" onclick="editProduct('${product.id}')" style="padding: 0.3rem 0.5rem; font-size: 0.8rem;">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <button class="btn btn-danger" onclick="deleteProduct('${product.id}')" style="padding: 0.3rem 0.5rem; font-size: 0.8rem;">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </td>
+                </tr>
+            `).join('');
+            
+            // Carregar abas
+            const tabsTable = document.getElementById('tabs-table-body');
+            tabsTable.innerHTML = tabs.map(tab => `
+                <tr>
+                    <td>${tab.id}</td>
+                    <td>${tab.name}</td>
+                    <td>${products.filter(p => p.tabId === tab.id).length}</td>
+                    <td class="table-actions">
+                        <button class="btn btn-danger" onclick="deleteTab('${tab.id}')" style="padding: 0.3rem 0.5rem; font-size: 0.8rem;">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </td>
+                </tr>
+            `).join('');
+            
+            // Carregar pedidos
+            const ordersTable = document.getElementById('orders-table-body');
+            ordersTable.innerHTML = orders.map(order => `
+                <tr>
+                    <td>${order.id}</td>
+                    <td>${order.items.map(item => `${item.product.name} x${item.quantity}`).join(', ')}</td>
+                    <td>R$ ${order.total.toFixed(2)}</td>
+                    <td>${new Date(order.date).toLocaleString('pt-BR')}</td>
+                    <td><span style="color: var(--success);">${order.status}</span></td>
+                </tr>
+            `).join('');
+            
+            // Carregar dropdown de abas
+            const tabSelect = document.getElementById('product-tab');
+            tabSelect.innerHTML = tabs.map(tab => 
+                `<option value="${tab.id}">${tab.name}</option>`
+            ).join('');
+            
+            updateAdminChat();
+        }
+
+        function editProduct(productId) {
+            const product = products.find(p => p.id === productId);
+            if (!product) return;
+            
+            document.getElementById('product-id').value = product.id;
+            document.getElementById('product-name').value = product.name;
+            document.getElementById('product-type').value = product.type;
+            document.getElementById('product-tab').value = product.tabId;
+            document.getElementById('product-price').value = product.price;
+            document.getElementById('product-description').value = product.description;
+            document.getElementById('product-stock').value = product.stock;
+            document.getElementById('product-image').value = product.image || '';
+            
+            // Mostrar/ocultar campos de brainrot
+            const brainrotFields = document.getElementById('brainrot-fields');
+            if (product.type === 'brainrot') {
+                brainrotFields.style.display = 'block';
+                document.getElementById('product-rarity').value = product.rarity;
+                document.getElementById('product-generation').value = product.generation;
+                document.getElementById('product-mutation').value = product.mutation;
+                document.getElementById('product-traits').value = product.traits ? product.traits.join(', ') : '';
+            } else {
+                brainrotFields.style.display = 'none';
+            }
+            
+            showToast('Produto carregado para edição', 'info');
+        }
+
+        function deleteProduct(productId) {
+            if (!confirm('Tem certeza que deseja excluir este produto?')) return;
+            
+            products = products.filter(p => p.id !== productId);
+            saveToLocalStorage();
+            loadAdminData();
+            renderProducts();
+            showToast('Produto excluído com sucesso!', 'success');
+        }
+
+        function deleteTab(tabId) {
+            if (!confirm('Tem certeza que deseja excluir esta aba? Todos os produtos serão movidos para a primeira aba.')) return;
+            
+            // Mover produtos para a primeira aba
+            products.forEach(product => {
+                if (product.tabId === tabId) {
+                    product.tabId = tabs[0].id;
+                }
+            });
+            
+            // Remover aba
+            tabs = tabs.filter(t => t.id !== tabId);
+            
+            saveToLocalStorage();
+            loadAdminData();
+            renderTabs();
+            showToast('Aba excluída com sucesso!', 'success');
+        }
+
+        // =============================================
+        // EVENT LISTENERS
+        // =============================================
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // Inicializar sistema
+            initSystem();
+            setupUpload();
+            
+            // Configurar título para abrir admin
+            document.getElementById('store-title').addEventListener('click', function() {
+                adminClickCount++;
+                
+                if (adminClickTimeout) {
+                    clearTimeout(adminClickTimeout);
+                }
+                
+                adminClickTimeout = setTimeout(() => {
+                    adminClickCount = 0;
+                }, 1000);
+                
+                if (adminClickCount === 3) {
+                    adminClickCount = 0;
+                    openAdminPanel();
+                }
+            });
+            
+            // Botão do carrinho
+            document.getElementById('cart-btn').addEventListener('click', startCheckout);
+            
+            // Modal de checkout
+            document.getElementById('close-modal').addEventListener('click', () => {
+                document.getElementById('checkout-modal').classList.remove('active');
+            });
+            
+            // Botões de navegação
+            document.getElementById('next-step').addEventListener('click', nextStep);
+            document.getElementById('prev-step').addEventListener('click', prevStep);
+            
+            // CAPTCHA
+            document.getElementById('refresh-captcha').addEventListener('click', generateNewCaptcha);
+            document.getElementById('audio-captcha').addEventListener('click', playCaptchaAudio);
+            
+            // Copiar ID e PIX
+            document.getElementById('copy-order-id').addEventListener('click', () => {
+                navigator.clipboard.writeText(currentOrderId);
+                showToast('ID copiado para área de transferência!', 'success');
+            });
+            
+            document.getElementById('copy-pix').addEventListener('click', () => {
+                navigator.clipboard.writeText(CONFIG.PIX_KEY);
+                showToast('Chave PIX copiada!', 'success');
+            });
+            
+            // Chat
+            document.getElementById('open-chat-support').addEventListener('click', () => {
+                document.getElementById('checkout-modal').classList.remove('active');
+                openChat();
+                sendChatMessage('Olá, preciso de suporte para minha compra.', true);
+            });
+            
+            document.getElementById('close-chat').addEventListener('click', () => {
+                document.getElementById('chat-overlay').classList.remove('active');
+            });
+            
+            document.getElementById('chat-buy-btn').addEventListener('click', () => {
+                document.getElementById('chat-overlay').classList.remove('active');
+                startCheckout();
+            });
+            
+            document.getElementById('chat-support-btn').addEventListener('click', () => {
+                sendChatMessage('Preciso falar com suporte.', true);
+                document.getElementById('initial-buttons').style.display = 'none';
+                document.getElementById('chat-input-container').classList.add('active');
+            });
+            
+            // Input do chat
+            document.getElementById('chat-input').addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    const message = e.target.value.trim();
+                    if (message) {
+                        sendChatMessage(message, true);
+                        e.target.value = '';
+                        
+                        // Verificar se é comando de admin
+                        if (message === '+unlock') {
+                            sendChatMessage('Acesso de admin concedido. Você agora pode acessar o painel admin.', false);
+                        }
+                    }
+                }
+            });
+            
+            // Painel Admin
+            document.getElementById('close-admin').addEventListener('click', () => {
+                document.getElementById('admin-overlay').classList.remove('active');
+            });
+            
+            // Tabs do admin
+            document.querySelectorAll('.admin-tab-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    document.querySelectorAll('.admin-tab-btn').forEach(b => b.classList.remove('active'));
+                    document.querySelectorAll('.admin-tab-content').forEach(c => c.classList.remove('active'));
+                    
+                    this.classList.add('active');
+                    const tab = this.dataset.tab;
+                    document.getElementById(`${tab}-tab`).classList.add('active');
+                });
+            });
+            
+            // Formulário de produto
+            document.getElementById('product-form').addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const productId = document.getElementById('product-id').value;
+                const productName = document.getElementById('product-name').value;
+                const productType = document.getElementById('product-type').value;
+                const productTab = document.getElementById('product-tab').value;
+                const productPrice = parseFloat(document.getElementById('product-price').value);
+                const productDescription = document.getElementById('product-description').value;
+                const productStock = parseInt(document.getElementById('product-stock').value);
+                
+                if (productId) {
+                    // Editar produto existente
+                    const index = products.findIndex(p => p.id === productId);
+                    if (index !== -1) {
+                        products[index] = {
+                            ...products[index],
+                            name: productName,
+                            type: productType,
+                            tabId: productTab,
+                            price: productPrice,
+                            description: productDescription,
+                            stock: productStock
+                        };
+                        
+                        if (productType === 'brainrot') {
+                            products[index].rarity = document.getElementById('product-rarity').value;
+                            products[index].generation = parseInt(document.getElementById('product-generation').value);
+                            products[index].mutation = document.getElementById('product-mutation').value;
+                            products[index].traits = document.getElementById('product-traits').value.split(',').map(t => t.trim());
+                        }
+                    }
+                } else {
+                    // Criar novo produto
+                    const newProduct = {
+                        id: 'prod-' + Date.now(),
+                        name: productName,
+                        type: productType,
+                        tabId: productTab,
+                        price: productPrice,
+                        description: productDescription,
+                        stock: productStock,
+                        image: document.getElementById('product-image').value
+                    };
+                    
+                    if (productType === 'brainrot') {
+                        newProduct.rarity = document.getElementById('product-rarity').value;
+                        newProduct.generation = parseInt(document.getElementById('product-generation').value);
+                        newProduct.mutation = document.getElementById('product-mutation').value;
+                        newProduct.traits = document.getElementById('product-traits').value.split(',').map(t => t.trim());
+                    }
+                    
+                    products.push(newProduct);
+                }
+                
+                saveToLocalStorage();
+                loadAdminData();
+                renderProducts();
+                this.reset();
+                document.getElementById('product-id').value = '';
+                document.getElementById('brainrot-fields').style.display = 'none';
+                
+                showToast('Produto salvo com sucesso!', 'success');
+            });
+            
+            // Limpar formulário
+            document.getElementById('clear-form').addEventListener('click', function() {
+                document.getElementById('product-form').reset();
+                document.getElementById('product-id').value = '';
+                document.getElementById('brainrot-fields').style.display = 'none';
+            });
+            
+            // Tipo de produto
+            document.getElementById('product-type').addEventListener('change', function() {
+                document.getElementById('brainrot-fields').style.display = 
+                    this.value === 'brainrot' ? 'block' : 'none';
+            });
+            
+            // Formulário de aba
+            document.getElementById('tab-form').addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const tabName = document.getElementById('tab-name').value;
+                const tabId = document.getElementById('tab-id').value.toLowerCase().replace(/\s+/g, '-');
+                
+                if (tabs.find(t => t.id === tabId)) {
+                    showToast('Já existe uma aba com este ID!', 'error');
+                    return;
+                }
+                
+                tabs.push({
+                    id: tabId,
+                    name: tabName,
+                    products: []
+                });
+                
+                saveToLocalStorage();
+                loadAdminData();
+                renderTabs();
+                this.reset();
+                
+                showToast('Aba criada com sucesso!', 'success');
+            });
+            
+            // Configurações
+            document.getElementById('settings-form').addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                CONFIG.ADMIN_PASSWORD = document.getElementById('admin-password').value;
+                CONFIG.PIX_KEY = document.getElementById('pix-key').value;
+                CONFIG.PIX_NAME = document.getElementById('pix-name').value;
+                CONFIG.WEBHOOK_URL = document.getElementById('webhook-url').value;
+                
+                showToast('Configurações salvas com sucesso!', 'success');
+            });
+            
+            // Chat admin
+            document.getElementById('admin-chat-send').addEventListener('click', function() {
+                const input = document.getElementById('admin-chat-input');
+                const message = input.value.trim();
+                
+                if (message) {
+                    sendChatMessage(`[ADMIN] ${message}`, false);
+                    input.value = '';
+                    updateAdminChat();
+                }
+            });
+            
+            document.getElementById('admin-chat-input').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    document.getElementById('admin-chat-send').click();
+                }
+            });
+        });
+    </script>
+</body>
+</html>
